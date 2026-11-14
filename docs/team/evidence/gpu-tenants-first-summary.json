@@ -1,0 +1,58 @@
+{
+  "completed": {
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "startup_seconds": 21.7498539541848,
+    "versions": {
+      "vllm": "0.19.2rc1.dev212+g8cd174fa3.cu129",
+      "torch": "2.11.0+cu129",
+      "lmcache": "0.4.4"
+    },
+    "request_count": 64,
+    "tenant_count": 16,
+    "client_concurrency": 1,
+    "native_prefix_caching": false,
+    "cache_capacity_GiB": 2,
+    "all_outputs_identical": true,
+    "note": "Analyze matching request IDs in LMCache logs; no quota enforcement tested."
+  },
+  "groups": [
+    {
+      "mode": "cache_salt",
+      "repetition": 0,
+      "requests": 16,
+      "lookup_misses": 1,
+      "lookup_hits_768": 15,
+      "actual_retrieves_768": 15,
+      "total_seconds": 9.63425982138142
+    },
+    {
+      "mode": "cache_salt",
+      "repetition": 1,
+      "requests": 16,
+      "lookup_misses": 0,
+      "lookup_hits_768": 16,
+      "actual_retrieves_768": 16,
+      "total_seconds": 2.839938416145742
+    },
+    {
+      "mode": "lmcache_tag",
+      "repetition": 0,
+      "requests": 16,
+      "lookup_misses": 16,
+      "lookup_hits_768": 0,
+      "actual_retrieves_768": 0,
+      "total_seconds": 4.281562287826091
+    },
+    {
+      "mode": "lmcache_tag",
+      "repetition": 1,
+      "requests": 16,
+      "lookup_misses": 0,
+      "lookup_hits_768": 16,
+      "actual_retrieves_768": 16,
+      "total_seconds": 2.839329772628844
+    }
+  ],
+  "tagged_isolation_and_reuse_pass": true,
+  "cache_salt_alone_separates_external_cache": false
+}

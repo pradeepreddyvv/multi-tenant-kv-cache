@@ -1,0 +1,9 @@
+{
+  "bytes_per_token": 114688,
+  "cache_target_GiB": 128,
+  "tokens_to_fill_capacity_approximately": 1198372.5714285714,
+  "equivalent_4096_token_prompts": 292.57142857142856,
+  "observed_single_4096_token_cold_TTFT_seconds": 70.63828516798094,
+  "sequential_prefill_equivalent_hours": 5.740762223175594,
+  "note": "Extrapolation from one request, NOT a measured 128 GiB fill. Batching, threads, pressure and placement can change it."
+}

@@ -1,0 +1,98 @@
+{
+  "measurement_date": "2026-11-10",
+  "prepared_date": "2026-11-13",
+  "note": "Curated historical evidence, not a fresh deployment or a complete raw-log archive.",
+  "files": [
+    {
+      "file": "gpu-7b-cache.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-7b/gpu_cache.json",
+      "source_sha256": "2ed8dc7db6660b86147455c7664716f33bdd1d6a200fe6aec54411521e86f431",
+      "published_sha256": "2ed8dc7db6660b86147455c7664716f33bdd1d6a200fe6aec54411521e86f431",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "gpu-scale-first-analysis.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-scale-965041/analysis.json",
+      "source_sha256": "895752de3267e0b877783b8794c096ccac384a39c3f8a10938471241113577d9",
+      "published_sha256": "895752de3267e0b877783b8794c096ccac384a39c3f8a10938471241113577d9",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "gpu-scale-occupancy.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-scale-976316/occupancy-analysis.json",
+      "source_sha256": "3fdcdd7b72c602b67cbcd85151f365ef47221ebbd705f4d6436b4b76444b03c8",
+      "published_sha256": "3fdcdd7b72c602b67cbcd85151f365ef47221ebbd705f4d6436b4b76444b03c8",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "gpu-primary-quota-analysis.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-primary-quota-run1/analysis.json",
+      "source_sha256": "3b920e4e5c09dd9b9d685c169a23226fa7c1173e38d85fdf23135fbf8bb36858",
+      "published_sha256": "3b920e4e5c09dd9b9d685c169a23226fa7c1173e38d85fdf23135fbf8bb36858",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "gpu-primary-quota-timeline.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-primary-quota-run1/quota-state.json",
+      "source_sha256": "69d5b536f087b9910ce969dd71ad7089515f3202fc7a77a9103244684cd74d72",
+      "published_sha256": "69d5b536f087b9910ce969dd71ad7089515f3202fc7a77a9103244684cd74d72",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "gpu-tenants-first-summary.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-tenants-run1/analysis.json",
+      "source_sha256": "e09dc44f1f6d315c2f56a6ad1592ab3ff03dcfc83ed3cb3324157e58f1abff77",
+      "published_sha256": "c9b95f4b6a33c4503f2214ab4a6f7dcdcb3677aafe0b377aa4ca46b2526f653e",
+      "transformation": "Removed request-level text records; retained summary fields"
+    },
+    {
+      "file": "gpu-tenants-repeat-summary.json",
+      "source_relative_to_original_DIS_ML": "results/gpu-tenants-run3/analysis.json",
+      "source_sha256": "2d3ce4573b9d439d93dbd11d7c7fa179e22c0acaaa36b3d1c914dc1c0a9c6358",
+      "published_sha256": "f4577a6d2db5c9f01b6cb28862436b98adfe37b894b465abfaee86cb3e71038f",
+      "transformation": "Removed request-level text records; retained summary fields"
+    },
+    {
+      "file": "cpu-7b-http-analysis.json",
+      "source_relative_to_original_DIS_ML": "results/cpu-project2-981115/analysis.json",
+      "source_sha256": "8138af261974d97f86628e51197e92ad8e9a40d7c1b6c3c55a2115c422037887",
+      "published_sha256": "8138af261974d97f86628e51197e92ad8e9a40d7c1b6c3c55a2115c422037887",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "cpu-128gib-estimate.json",
+      "source_relative_to_original_DIS_ML": "results/cpu-project2-981115/runtime-estimate.json",
+      "source_sha256": "2bfd718bfbbda6d7dc8487e322c8b1a0c09ec086984438f69a5b9edd91a535f2",
+      "published_sha256": "2bfd718bfbbda6d7dc8487e322c8b1a0c09ec086984438f69a5b9edd91a535f2",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "cpu-raw-memory-probe.json",
+      "source_relative_to_original_DIS_ML": "results/memory-probe-964668.json",
+      "source_sha256": "105b1ea4fb25ef553292a1dd1ed6b20b6cc58a3b373e61aa14fd236f6042ebdb",
+      "published_sha256": "105b1ea4fb25ef553292a1dd1ed6b20b6cc58a3b373e61aa14fd236f6042ebdb",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "rag-diagnostic-summary.json",
+      "source_relative_to_original_DIS_ML": "results/rag/smoke_summary.json",
+      "source_sha256": "91786518a0bcbe6f365441c58776cab8a3fd40faf2151fd0e125961eca9f7f4d",
+      "published_sha256": "91786518a0bcbe6f365441c58776cab8a3fd40faf2151fd0e125961eca9f7f4d",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "original-analysis-replay.json",
+      "source_relative_to_original_DIS_ML": "preservation-2026-11-10/ANALYSIS_REPLAY_VERIFICATION.json",
+      "source_sha256": "6315367c313303f15eec3fbfa8d20890ab173863a52b1bc3091e93f2472f6b70",
+      "published_sha256": "6315367c313303f15eec3fbfa8d20890ab173863a52b1bc3091e93f2472f6b70",
+      "transformation": "Exact copy"
+    },
+    {
+      "file": "SOL_FEASIBILITY_COMPLETE_REPORT.pdf",
+      "source_relative_to_original_DIS_ML": "preservation-2026-11-10/SOL_FEASIBILITY_COMPLETE_REPORT.pdf",
+      "source_sha256": "369caddd09487ff3e1d23bf98e67f87b7cd69fede225f3292b57ef5b56b50177",
+      "published_sha256": "369caddd09487ff3e1d23bf98e67f87b7cd69fede225f3292b57ef5b56b50177",
+      "transformation": "Exact original 17-page report; links inside refer to original research archive"
+    }
+  ]
+}

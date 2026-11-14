@@ -1,0 +1,92 @@
+{
+  "job": "976316",
+  "completed": {
+    "requests": 600,
+    "prompt_tokens_each": 4096,
+    "elapsed_seconds": 153.63399115297943,
+    "cache_capacity_GiB": 128,
+    "note": "Use store/retrieve logs and occupancy metrics to validate retained data, not capacity alone."
+  },
+  "occupancy": [
+    {
+      "label": "before_population",
+      "elapsed_seconds": 3.6568380892276764e-06,
+      "chunks": 0,
+      "tensor_bytes": 0,
+      "physical_bytes": 0
+    },
+    {
+      "label": "after_100",
+      "elapsed_seconds": 29.078477328643203,
+      "chunks": 1600,
+      "tensor_bytes": 23488102400,
+      "physical_bytes": 23488102400
+    },
+    {
+      "label": "after_200",
+      "elapsed_seconds": 53.80492742964998,
+      "chunks": 3200,
+      "tensor_bytes": 46976204800,
+      "physical_bytes": 46976204800
+    },
+    {
+      "label": "after_300",
+      "elapsed_seconds": 78.51473564980552,
+      "chunks": 4800,
+      "tensor_bytes": 70464307200,
+      "physical_bytes": 70464307200
+    },
+    {
+      "label": "after_400",
+      "elapsed_seconds": 103.2268155226484,
+      "chunks": 6400,
+      "tensor_bytes": 93952409600,
+      "physical_bytes": 93952409600
+    },
+    {
+      "label": "after_500",
+      "elapsed_seconds": 128.00314588891342,
+      "chunks": 8000,
+      "tensor_bytes": 117440512000,
+      "physical_bytes": 117440512000
+    },
+    {
+      "label": "after_600",
+      "elapsed_seconds": 152.76788679277524,
+      "chunks": 9362,
+      "tensor_bytes": 137434759168,
+      "physical_bytes": 137434759168
+    },
+    {
+      "label": "after_retention_probes",
+      "elapsed_seconds": 153.6207755766809,
+      "chunks": 9362,
+      "tensor_bytes": 137434759168,
+      "physical_bytes": 137434759168
+    }
+  ],
+  "peak_retained_GiB": 127.99609375,
+  "max_sampled_cgroup_highwater_GiB": 145.18649291992188,
+  "job_limit_GiB": [
+    192.0
+  ],
+  "max_memory_failcnt": 0,
+  "oldest_probe_hits": [
+    [
+      0
+    ],
+    [
+      0
+    ]
+  ],
+  "newest_probe_retrieves": [
+    [
+      4096
+    ],
+    [
+      4096
+    ]
+  ],
+  "cache_full_warning_count": 270,
+  "note": "Retained bytes are under-lock sums of live cache objects; cgroup memory includes overhead. No tenant quotas tested."
+}

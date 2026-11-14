@@ -1,0 +1,8 @@
+{
+  "job_id": "964668",
+  "host": "sc070",
+  "touched_GiB": 128,
+  "elapsed_seconds": 53.73909069923684,
+  "maxrss_KiB": 134229616,
+  "kind": "anonymous RAM allocation, not populated LMCache"
+}

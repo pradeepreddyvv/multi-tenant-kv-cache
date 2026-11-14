@@ -1,0 +1,769 @@
+{
+  "completed": {
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "host": "sc005",
+    "job": "981115",
+    "requests": 68,
+    "rounds": [
+      {
+        "tenant_count": 4,
+        "client_concurrency": 4,
+        "label": "initial-cold",
+        "completed": 4,
+        "seconds": 87.82153600500897
+      },
+      {
+        "tenant_count": 4,
+        "client_concurrency": 4,
+        "label": "initial-warm",
+        "completed": 4,
+        "seconds": 18.729068548884243
+      },
+      {
+        "tenant_count": 8,
+        "client_concurrency": 4,
+        "label": "8-tenant-cold",
+        "completed": 8,
+        "seconds": 145.93307793699205
+      },
+      {
+        "tenant_count": 8,
+        "client_concurrency": 4,
+        "label": "8-tenant-warm",
+        "completed": 8,
+        "seconds": 44.26255377708003
+      },
+      {
+        "tenant_count": 16,
+        "client_concurrency": 4,
+        "label": "16-tenant-cold",
+        "completed": 16,
+        "seconds": 308.3041148809716
+      },
+      {
+        "tenant_count": 16,
+        "client_concurrency": 4,
+        "label": "16-tenant-warm",
+        "completed": 16,
+        "seconds": 71.14173770090565
+      }
+    ],
+    "l1_capacity_GiB": 2,
+    "l2_backend": "RAM-backed /dev/shm filesystem",
+    "native_prefix_cache": false,
+    "note": "L2 soft quotas plus a bounded known-key L1 zero-retention probe; not general L1 quotas or occupied 128 GiB."
+  },
+  "latencies": {
+    "initial-cold": {
+      "requests": 4,
+      "median_ttft_seconds": 63.79357211641036,
+      "p95_ttft_seconds": 78.0899146781303,
+      "median_completion_seconds": 86.43199552991427,
+      "completed_tokens": 32
+    },
+    "initial-warm": {
+      "requests": 4,
+      "median_ttft_seconds": 11.221997792134061,
+      "p95_ttft_seconds": 11.226054201833904,
+      "median_completion_seconds": 18.722313029458746,
+      "completed_tokens": 32
+    },
+    "background-B": {
+      "requests": 3,
+      "median_ttft_seconds": 6.712771880906075,
+      "p95_ttft_seconds": 8.43227175809443,
+      "median_completion_seconds": 15.383937674574554,
+      "completed_tokens": 24
+    },
+    "A-still-in-L1": {
+      "requests": 1,
+      "median_ttft_seconds": 6.960899802390486,
+      "p95_ttft_seconds": 6.960899802390486,
+      "median_completion_seconds": 15.236394649371505,
+      "completed_tokens": 8
+    },
+    "A-after-primary-delete": {
+      "requests": 1,
+      "median_ttft_seconds": 15.01679771207273,
+      "p95_ttft_seconds": 15.01679771207273,
+      "median_completion_seconds": 22.675586790777743,
+      "completed_tokens": 8
+    },
+    "A-after-raise": {
+      "requests": 3,
+      "median_ttft_seconds": 15.011490569915622,
+      "p95_ttft_seconds": 15.12255723355338,
+      "median_completion_seconds": 23.99471713695675,
+      "completed_tokens": 24
+    },
+    "B-from-L2": {
+      "requests": 1,
+      "median_ttft_seconds": 2.5896621639840305,
+      "p95_ttft_seconds": 2.5896621639840305,
+      "median_completion_seconds": 11.011829767841846,
+      "completed_tokens": 8
+    },
+    "8-tenant-cold": {
+      "requests": 8,
+      "median_ttft_seconds": 62.142169860890135,
+      "p95_ttft_seconds": 68.37939475197345,
+      "median_completion_seconds": 72.85267810150981,
+      "completed_tokens": 64
+    },
+    "8-tenant-warm": {
+      "requests": 8,
+      "median_ttft_seconds": 10.970810615457594,
+      "p95_ttft_seconds": 13.93680554209277,
+      "median_completion_seconds": 21.89127116720192,
+      "completed_tokens": 64
+    },
+    "16-tenant-cold": {
+      "requests": 16,
+      "median_ttft_seconds": 67.31595641863532,
+      "p95_ttft_seconds": 68.88723437301815,
+      "median_completion_seconds": 76.98144494649023,
+      "completed_tokens": 128
+    },
+    "16-tenant-warm": {
+      "requests": 16,
+      "median_ttft_seconds": 10.31992548913695,
+      "p95_ttft_seconds": 12.23379453085363,
+      "median_completion_seconds": 18.410677812760696,
+      "completed_tokens": 128
+    },
+    "4K-cold": {
+      "requests": 1,
+      "median_ttft_seconds": 70.63828516798094,
+      "p95_ttft_seconds": 70.63828516798094,
+      "median_completion_seconds": 78.83363987877965,
+      "completed_tokens": 8
+    },
+    "4K-warm": {
+      "requests": 1,
+      "median_ttft_seconds": 1.6595245548523962,
+      "p95_ttft_seconds": 1.6595245548523962,
+      "median_completion_seconds": 8.948029147926718,
+      "completed_tokens": 8
+    },
+    "4K-warm-32-output": {
+      "requests": 1,
+      "median_ttft_seconds": 1.3205559276975691,
+      "p95_ttft_seconds": 1.3205559276975691,
+      "median_completion_seconds": 34.90420589176938,
+      "completed_tokens": 32
+    }
+  },
+  "retention_metric_deltas": {
+    "A-L1-remains": {
+      "lmcache_mp_lookup_hit_tokens_total{cache_salt=\"tenant0\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_tokens_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l1_tokens_total{cache_salt=\"tenant0\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l1_tokens_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l1_keys_total{cache_salt=\"tenant0\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 3.0,
+      "lmcache_mp_lookup_hit_l1_keys_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 3.0,
+      "lmcache_mp_num_finished_retrieves_total{device=\"cpu\"}": 2.0
+    },
+    "A-after-L1-delete": {
+      "lmcache_mp_lookup_hit_tokens_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l1_tokens_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l1_keys_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 3.0
+    },
+    "B-L2-reuse": {
+      "lmcache_mp_lookup_hit_tokens_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l2_tokens_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 768.0,
+      "lmcache_mp_lookup_hit_l2_keys_total{cache_salt=\"tenant1\",model_name=\"/scratch/vvenuth1/DIS_ML/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28\"}": 3.0,
+      "lmcache_mp_num_finished_retrieves_total{device=\"cpu\"}": 1.0
+    }
+  },
+  "occupancy_snapshots": [
+    {
+      "label": "four_tenants_populated",
+      "l1_used_bytes": 352321536,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "A_L2_zero_L1_still_present",
+      "l1_used_bytes": 352321536,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.0009999992325901985,
+            "current_usage_gb": 0.0
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "A_L1_deleted_while_B_serves",
+      "l1_used_bytes": 264241152,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.0009999992325901985,
+            "current_usage_gb": 0.0
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "A_refill_evicted_while_low",
+      "l1_used_bytes": 264241152,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.0009999992325901985,
+            "current_usage_gb": 0.0
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "A_retains_after_raise",
+      "l1_used_bytes": 528482304,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "after_8_tenants",
+      "l1_used_bytes": 704643072,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.328125
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "after_16_tenants",
+      "l1_used_bytes": 1409286144,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.328125
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant15": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          }
+        }
+      }
+    },
+    {
+      "label": "final",
+      "l1_used_bytes": 1526726656,
+      "l1_capacity_bytes": 2147483648,
+      "quotas": {
+        "users": {
+          "tenant0": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.328125
+          },
+          "tenant1": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant2": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant3": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.24609375
+          },
+          "tenant4": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant5": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant6": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant7": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.1640625
+          },
+          "tenant8": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant9": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant10": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant11": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant12": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant13": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant14": {
+            "limit_gb": 0.5,
+            "current_usage_gb": 0.08203125
+          },
+          "tenant15": {
+            "limit_gb": 2.0,
+            "current_usage_gb": 0.51953125
+          }
+        }
+      }
+    }
+  ],
+  "peak_sampled_job_memory_GiB": 57.393157958984375,
+  "max_job_memory_failcnt": 0,
+  "output_consistency_by_input": true,
+  "all_responses_have_usage_and_text": true,
+  "note": "Pilot observations; p95 has at most 16 requests per round. No occupied 128 GiB test or general L1 quota controller."
+}

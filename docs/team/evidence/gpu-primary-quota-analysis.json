@@ -1,0 +1,32 @@
+{
+  "requests": 184,
+  "event_overlap_with_inference_batch": [
+    true,
+    true
+  ],
+  "before_bytes": {
+    "A": 44040192,
+    "B": 44040192,
+    "C": 44040192,
+    "D": 44040192
+  },
+  "after_bytes": {
+    "A": 132120576,
+    "B": 44040192,
+    "C": 44040192,
+    "D": 44040192
+  },
+  "seconds_to_first_zero_after_lower": 0.0003077983856201172,
+  "zero_occupancy_samples_while_lowered": 60,
+  "low_quota_A_requests": 15,
+  "low_quota_A_lookup_misses": 15,
+  "peer_occupancy_stable": true,
+  "actual_768_token_retrieves": 161,
+  "output_consistency_by_input": true,
+  "evicted_chunks": {
+    "A": 51
+  },
+  "thread_errors": [],
+  "note": "Custom soft-quota prototype on primary L1; offline inference batches, no HTTP/streaming TTFT or 128 GiB combined test.",
+  "feasibility_pass": true
+}

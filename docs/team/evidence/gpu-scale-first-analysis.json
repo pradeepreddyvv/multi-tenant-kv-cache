@@ -1,0 +1,20 @@
+{
+  "job_id": "965041",
+  "store_log_records": 602,
+  "first_600_reported_store_tokens": 2457600,
+  "reported_store_GiB": 131.25,
+  "retrieval_records": [
+    [
+      "602",
+      "4096"
+    ],
+    [
+      "603",
+      "4096"
+    ]
+  ],
+  "allocator_full_warning_count": 270,
+  "slurm_peak_rss_KiB": 138340148,
+  "slurm_peak_rss_GiB": 131.93144607543945,
+  "note": "Stored logs describe transfer attempts; warnings mean they cannot establish exact retained occupancy. Oldest requests 600/601 missed; newest 602/603 retrieved 4096 tokens each. Native prefix caching disabled."
+}

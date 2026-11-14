@@ -1,5 +1,9 @@
 # Multi-tenant CPU KV-cache feasibility
 
+**Team branch:** start with [the team handoff](docs/team/START_HERE.md) for the research question, measured outputs, test catalog, collaboration plan and reproducibility instructions. This branch adds documentation and curated historical evidence to the basic starter on `main`.
+
+**Research question:** under a fixed CPU-memory KV-cache budget, can adapting per-tenant allocations improve latency and fairness when workloads change?
+
 A basic research prototype for **GPU inference with CPU-RAM KV caching** using Qwen2.5-7B, vLLM and LMCache. It contains three independent diagnostics:
 
 | Command | Purpose | Cache capacity |
@@ -82,4 +86,4 @@ No command above starts a model except the explicit Slurm/run commands. [Histori
 
 ## Scope for the next version
 
-Integrate the independent mechanisms; instrument GPU streaming latency; implement a simple adaptive policy; compare fixed/manual/adaptive quotas under equal budgets and changing demand. Keep all results, model caches, credentials and local configuration out of Git. The original private research archive, chats and instructor correspondence are not part of this repository.
+Integrate the independent mechanisms; instrument GPU streaming latency; implement a simple adaptive policy; compare fixed/manual/adaptive quotas under equal budgets and changing demand. Keep new raw run outputs, model caches, credentials and local configuration out of Git. This team branch intentionally includes the curated, checksummed historical evidence under `docs/team/evidence/`. The original private research archive, chats and instructor correspondence are not part of this repository.

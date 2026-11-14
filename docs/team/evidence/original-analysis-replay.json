@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "run": "cpu-project2-981115",
+      "saved_analysis_matches_replay": true
+    },
+    {
+      "run": "gpu-tenants-run3",
+      "saved_analysis_matches_replay": true
+    },
+    {
+      "run": "gpu-primary-quota-run1",
+      "saved_analysis_matches_replay": true
+    },
+    {
+      "run": "gpu-scale-976316",
+      "saved_analysis_matches_replay": true
+    }
+  ],
+  "note": "Saved-log analysis only; no fresh inference or deployment."
+}

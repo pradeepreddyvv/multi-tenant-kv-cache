@@ -1,0 +1,32 @@
+{
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "versions": {
+    "vllm": "0.19.2rc1.dev212+g8cd174fa3.cu129",
+    "torch": "2.11.0+cu129",
+    "lmcache": "0.4.4",
+    "transformers": "5.6.2"
+  },
+  "startup_seconds": 60.74025377491489,
+  "runs": [
+    {
+      "repetition": 0,
+      "seconds": 2.707729886751622,
+      "tokens": 64,
+      "texts": [
+        " The document repeatedly states that it describes memory caching for tenant 0. It appears to be a repetitive and possibly incomplete or placeholder text. The content does not provide",
+        " The document repeatedly states that it describes memory caching for tenant 1. It appears to be a repetitive and possibly incomplete or placeholder text. The content does not provide"
+      ]
+    },
+    {
+      "repetition": 1,
+      "seconds": 0.7085408619605005,
+      "tokens": 64,
+      "texts": [
+        " The document repeatedly states that it describes memory caching for tenant 0. It appears to be a repetitive and possibly incomplete or placeholder text. The content does not provide",
+        " The document repeatedly states that it describes memory caching for tenant 1. It appears to be a repetitive and possibly incomplete or placeholder text. The content does not provide"
+      ]
+    }
+  ],
+  "external_cache_requested": true,
+  "note": "Confirm actual cache retrieval in engine logs; timing alone is not proof."
+}

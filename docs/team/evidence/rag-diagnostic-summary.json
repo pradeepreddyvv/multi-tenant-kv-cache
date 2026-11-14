@@ -1,0 +1,31 @@
+{
+  "host": "sg232",
+  "device": "cpu",
+  "documents": [
+    "2021687417.pdf",
+    "2023555914.pdf",
+    "2019668506.pdf",
+    "USCOURTS-nmd-1_24-cr-00032-8.pdf",
+    "2023555906.pdf",
+    "2023555934.pdf",
+    "2023555917.pdf",
+    "2020714994.pdf",
+    "FBS_S_ES_Public.pdf",
+    "USCOURTS-laed-2_23-cv-06661-0.pdf"
+  ],
+  "selection": "10 shortest documents by annotated layout range; feasibility sample only",
+  "layouts": 245,
+  "questions": 29,
+  "gold_regions": 36,
+  "mapped_regions_iou_ge_0_5": 36,
+  "questions_with_all_regions_mapped": 29,
+  "embedding_seconds": 16.44673461886123,
+  "total_seconds": 30.495100577827543,
+  "maxrss_KiB": 3919712,
+  "index_bytes": 376365,
+  "retrieval_median_seconds": 0.019443137105554342,
+  "retrieval_p95_seconds": 0.035057173948735,
+  "complete_evidence_count": 21,
+  "reader_cases": 3,
+  "note": "Basic per-document layout retrieval only. No gated expansion, baseline comparison, or quality claim."
+}
