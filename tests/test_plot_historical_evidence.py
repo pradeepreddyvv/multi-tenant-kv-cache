@@ -61,6 +61,11 @@ class ExtractionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             plot.quota_series(timeline_fixture(peer_c=0))
 
+    def test_overlap_spans_mark_where_a_equals_peers(self):
+        rows, _ = plot.quota_series(timeline_fixture())
+        # A equals the peers (42 MiB) only from the first sample to the second.
+        self.assertEqual(plot.overlap_spans(rows), [(0.0, 1.5, 42.0)])
+
     def test_tenant_runs_must_agree(self):
         self.assertEqual(plot.tenant_outcomes(tenant_fixture(), tenant_fixture())[0]['misses'], 1)
         with self.assertRaises(ValueError):
@@ -90,11 +95,13 @@ class CommandTests(unittest.TestCase):
                 ET.parse(str(svg))  # well-formed XML
             self.assertIn('fig-scale-retained.svg', json.loads((out / 'figure-data.json').read_text()))
 
-    def test_refuses_to_write_into_evidence_dir(self):
+    def test_refuses_to_write_into_evidence_dir_or_below_it(self):
         with tempfile.TemporaryDirectory() as tmp:
-            result = subprocess.run([sys.executable, str(SCRIPTS / 'plot_historical_evidence.py'),
-                                     tmp, tmp], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            self.assertNotEqual(result.returncode, 0)
+            for out in (tmp, str(Path(tmp) / 'figures')):
+                result = subprocess.run([sys.executable, str(SCRIPTS / 'plot_historical_evidence.py'),
+                                         tmp, out], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                self.assertNotEqual(result.returncode, 0)
+            self.assertFalse((Path(tmp) / 'figures').exists())
 
 
 if __name__ == '__main__':

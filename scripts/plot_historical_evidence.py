@@ -63,6 +63,18 @@ def quota_series(timeline):
     return rows, events
 
 
+def overlap_spans(rows):
+    """(start s, end s, MiB) step segments where A holds exactly the peers' value."""
+    spans = []
+    for row, nxt in zip(rows, rows[1:]):
+        if row['a_MiB'] == row['peer_each_MiB']:
+            if spans and spans[-1][1] == row['seconds'] and spans[-1][2] == row['a_MiB']:
+                spans[-1] = (spans[-1][0], nxt['seconds'], row['a_MiB'])
+            else:
+                spans.append((row['seconds'], nxt['seconds'], row['a_MiB']))
+    return spans
+
+
 def tenant_outcomes(first, repeat):
     """Miss/hit counts per (mode, repetition). Both fresh-process runs must agree."""
     def counts(summary):
@@ -175,11 +187,12 @@ def scale_figure(occupancy):
     body.append(text(ax.x(n) + 12, ax.y(g) + 22, '{:,} chunks'.format(occupancy['occupancy'][-1]['chunks'])))
     step = pts[1][1] - pts[0][1]
     caption = [
-        'Job %s, Nov 10, 2026: one A100 80 GiB, 192 GiB host RAM; Qwen2.5-7B BF16, LMCache 0.4.4, native prefix cache off. '
-        'Source: gpu-scale-occupancy.json.' % occupancy['job'],
-        'Under-lock sums of live cache objects. Single tenant, no quotas. %d allocator-full warnings near capacity; '
-        'peak job memory %.1f GiB.' % (occupancy['cache_full_warning_count'],
-                                       occupancy['max_sampled_cgroup_highwater_GiB']),
+        'Job %s, Nov 10, 2026: one A100 80 GiB, 192 GiB job RAM allocation; Qwen2.5-7B BF16, LMCache 0.4.4, '
+        'native prefix cache off.' % occupancy['job'],
+        'Under-lock sums of live cache objects. Single tenant, no quotas. %d allocator-full warnings near capacity.'
+        % occupancy['cache_full_warning_count'],
+        'Observed cgroup high-water %.1f GiB, including file cache and runtime memory; not a minimum required '
+        'allocation. Source: gpu-scale-occupancy.json.' % occupancy['max_sampled_cgroup_highwater_GiB'],
     ]
     title = 'Retained KV grows %.1f GiB per 100 prompts until the 128 GiB tier is full' % step
     subtitle = 'Directly measured retained KV bytes after every 100 prompts (GiB = 2^30 bytes)'
@@ -201,25 +214,38 @@ def quota_figure(timeline, analysis):
     xs = [ax.x(r['seconds']) for r in rows]
     body += polyline(steps(xs, [ax.y(r['a_limit_MiB']) for r in rows]), INK_2, dash='6 4')
     body += polyline(steps(xs, [ax.y(r['a_MiB']) for r in rows]), BLUE)
-    # Peers on top: where A also holds 42 MiB the lines coincide, and the
-    # claim being shown is that B, C, D never change.
-    body += polyline(steps(xs, [ax.y(r['peer_each_MiB']) for r in rows]), ORANGE, halo=True)
+    body += polyline(steps(xs, [ax.y(r['peer_each_MiB']) for r in rows]), ORANGE)
+    # Where A equals the peers the lines coincide. Dash A over the peer line
+    # there, so both identities stay visible and A's drop and refill read as
+    # one continuous trace.
+    overlaps = overlap_spans(rows)
+    for x0, x1, value in overlaps:
+        y = ax.y(value)
+        body.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s" stroke-width="2" '
+                    'stroke-dasharray="5 5"/>' % (ax.x(x0), ax.x(x1), y, y, BLUE))
     end = rows[-1]
     body.append(text(ax.r + 10, ax.y(end['a_MiB']) + 4, 'A: %d MiB' % end['a_MiB'], 13, INK))
     body.append(text(ax.r + 10, ax.y(end['peer_each_MiB']) + 4,
                      'B, C, D: %d MiB each' % end['peer_each_MiB'], 13, INK))
     body += legend(96, 94, [('A retained', BLUE, None),
                             ('B, C, D retained (each)', ORANGE, None),
-                            ('A quota (limit)', INK_2, '6 4')], spacing=200)
+                            ('A quota (limit)', INK_2, '6 4')], spacing=190)
+    if overlaps:  # two-tone swatch matching the dashed overlap segments
+        lx = 96 + 190 * 3
+        body.append('<line x1="%d" x2="%d" y1="94" y2="94" stroke="%s" stroke-width="2"/>' % (lx, lx + 22, ORANGE))
+        body.append('<line x1="%d" x2="%d" y1="94" y2="94" stroke="%s" stroke-width="2" '
+                    'stroke-dasharray="5 5"/>' % (lx, lx + 22, BLUE))
+        body.append(text(lx + 30, 98, 'A equal to B, C, D', 13, INK))
     low = [r for r in rows if events[0]['seconds'] <= r['seconds'] < events[1]['seconds']]
     zeros = sum(r['a_MiB'] == 0 for r in low)
     caption = [
-        'Job 959878, Nov 10, 2026: one A30 24 GiB, 40 GiB host RAM, 2 GiB CPU tier; 4 tagged tenants, '
+        'Job 959878, Nov 10, 2026: one A30 24 GiB, 40 GiB job RAM allocation, 2 GiB CPU tier; 4 tagged tenants, '
         '%d requests in batches of 4.' % analysis['requests'],
-        'Custom bounded hook sampled every 100 ms; not stock LMCache quotas, not adaptive. '
-        '%d/%d samples zero while lowered; %d/%d low-quota A requests missed.'
+        'Custom bounded hook, passes 100 ms apart, each sampled after its evictions; not stock LMCache quotas, '
+        'not adaptive.',
+        'Zero in %d/%d post-enforcement samples while lowered; %d/%d settled low-quota A requests missed. '
+        'Source: gpu-primary-quota-*.json.'
         % (zeros, len(low), analysis['low_quota_A_lookup_misses'], analysis['low_quota_A_requests']),
-        'Source: gpu-primary-quota-timeline.json, gpu-primary-quota-analysis.json.',
     ]
     title = "Lowering tenant A's quota evicted only A's KV; B, C, D kept 42 MiB each"
     subtitle = 'Retained KV bytes per tenant during live inference, with two manual quota changes (MiB = 2^20 bytes)'
@@ -277,8 +303,12 @@ def main():
     parser.add_argument('evidence_dir', type=Path)
     parser.add_argument('out_dir', type=Path)
     args = parser.parse_args()
-    if args.out_dir.resolve() == args.evidence_dir.resolve():
-        parser.error('OUT_DIR must differ from EVIDENCE_DIR; evidence is never written to')
+    evidence, out = args.evidence_dir.resolve(), args.out_dir.resolve()
+    try:
+        out.relative_to(evidence)
+        parser.error('OUT_DIR must not be EVIDENCE_DIR or inside it; evidence is never written to')
+    except ValueError:
+        pass  # out is outside the evidence tree (case-insensitive aliases are not detected)
 
     def load(name):
         return json.loads((args.evidence_dir / name).read_text())
