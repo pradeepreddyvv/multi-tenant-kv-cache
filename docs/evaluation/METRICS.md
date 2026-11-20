@@ -55,7 +55,7 @@ The eligible-token rule is an observation for LMCache 0.4.4 with the tested conf
 | `cgroup_highwater_GiB`, `memory_failcnt` | Job cgroup `memory.max_usage_in_bytes` / 2^30 and `memory.failcnt` (cgroup v1 only; other layouts need a validated adapter) |
 | `allocator_full_warnings` | Count of LMCache "no memory is available" messages. Always reported. |
 | `quota_updates` | Accepted / deferred / error counts from adapter `apply_quotas` results |
-| `enforcement_delay_s` | `applied_at_s` → first snapshot with `retained_bytes ≤ quota_bytes`. Resolution equals the snapshot cadence; report the cadence with it. |
+| `enforcement_delay_s` | `applied_at_s` → first snapshot with `retained_bytes ≤ quota_bytes`. Resolution equals the snapshot cadence; report the cadence with it. Snapshots must be taken independently of the enforcer, or both before and after each pass. A post-eviction sample alone always reads compliant and hides occupancy between passes (the historical hook samples this way; see CLAIMS K14). |
 | `controller_cpu_s` | CPU time of the policy and enforcement threads over the measured window |
 
 ## Comparison metrics
