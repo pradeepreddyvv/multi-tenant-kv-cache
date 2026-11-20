@@ -104,7 +104,7 @@ These come from the report's "Not claimed as completed" section and `docs/LIMITA
 Source: course Phase 2 assignment page (copy provided Nov 18; kept out of Git).
 
 - **Deadline:** draft slide PDF by 11:59 pm Nov 21, one submission per group. Timezone is not stated on the page (D02 still open on that point).
-- **Duration:** not yet announced ("based on the number of project groups"). Presentation timeline link is TBD.
+- **Duration:** 15 minutes total per presentation (team update, Nov 19). Still to confirm: whether that includes Q&A. If it does, plan for about 10–12 minutes of talk, which gives the evidence section about 3–4 minutes: the three C02 figures plus one setup and limitations slide. The presentation timeline link is TBD.
 - **Rubric (40 points):** problem, motivation and RQs 5; technical challenges (2–4) 4; technical ideas and system design 9; implementation and methodology 5; **experimental results 7; analysis and insights 5**; slide quality and timing 3; Q&A 2. Presenter split is not graded, but all members attend and answer questions.
 
 Requirements that bear on the evidence section:

@@ -30,6 +30,8 @@ The eligible-token rule is an observation for LMCache 0.4.4 with the tested conf
 | `recomputed_prefill_tokens` | `prompt_tokens − retrieved_tokens` | Proposal's "repeated prefill work" |
 | `failed` | Error response, timeout, missing usage record or empty text | Report beside every latency number (W18) |
 
+**Parsing rule:** parse `Inference Engine computed tokens` as a field and flag non-zero values. Never use it as a match condition; the historical analyzers' regex does, and would silently drop lines when native prefix caching is on (see `METRIC_CHECKS.md`). `scripts/check_request_attribution.py` implements this classification.
+
 **Validity rule (proposed):** a run with any `unattributed` request is marked Metric validity = "Needs review", not Valid, until the reviewer explains it (W12). Unattributed requests stay in denominators and count as non-hits.
 
 ## Tenant-level metrics (per tenant, per window or per run)
