@@ -90,7 +90,9 @@ class CommandTests(unittest.TestCase):
                                      str(evidence), str(out)])
             self.assertEqual(before, {p.name: p.read_bytes() for p in evidence.iterdir()})
             svgs = sorted(out.glob('*.svg'))
-            self.assertEqual(len(svgs), 3)
+            self.assertEqual(sorted(p.name for p in svgs), sorted(
+                ['fig-scale-retained.svg', 'fig-quota-timeline.svg', 'fig-tenant-isolation.svg',
+                 'slide-scale-retained.svg', 'slide-quota-timeline.svg', 'slide-tenant-isolation.svg']))
             for svg in svgs:
                 ET.parse(str(svg))  # well-formed XML
             self.assertIn('fig-scale-retained.svg', json.loads((out / 'figure-data.json').read_text()))

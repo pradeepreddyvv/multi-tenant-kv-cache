@@ -107,9 +107,10 @@ def frame(title, subtitle, caption, body):
 class Axes:
     """Linear axes with recessive grid; plot box in pixels."""
 
-    def __init__(self, left, top, right, bottom, xmax, ymax):
+    def __init__(self, left, top, right, bottom, xmax, ymax, tick=13, label=14):
         self.l, self.t, self.r, self.b = left, top, right, bottom
         self.xmax, self.ymax = xmax, ymax
+        self.tick, self.label = tick, label   # font sizes; slide variants use larger ones
 
     def x(self, v):
         return self.l + (self.r - self.l) * v / self.xmax
@@ -122,15 +123,17 @@ class Axes:
         for v in yticks:
             out.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s"/>'
                        % (self.l, self.r, self.y(v), self.y(v), GRID))
-            out.append(text(self.l - 8, self.y(v) + 4, yfmt(v), anchor='end'))
+            out.append(text(self.l - 8, self.y(v) + self.tick * 0.3, yfmt(v), self.tick, anchor='end'))
         for v in xticks:
-            out.append(text(self.x(v), self.b + 20, xfmt(v), anchor='middle'))
+            out.append(text(self.x(v), self.b + self.tick * 1.5, xfmt(v), self.tick, anchor='middle'))
         out.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s"/>'
                    % (self.l, self.r, self.b, self.b, INK_2))
-        out.append(text((self.l + self.r) / 2, self.b + 42, xlabel, 14, anchor='middle'))
-        out.append('<text transform="translate(%.1f %.1f) rotate(-90)" font-size="14" '
+        out.append(text((self.l + self.r) / 2, self.b + self.tick * 1.5 + self.label * 1.5, xlabel,
+                        self.label, anchor='middle'))
+        out.append('<text transform="translate(%.1f %.1f) rotate(-90)" font-size="%d" '
                    'fill="%s" text-anchor="middle">%s</text>'
-                   % (self.l - 52, (self.t + self.b) / 2, INK_2, escape(ylabel)))
+                   % (self.l - 8 - self.tick * 2.2 - self.label * 0.7, (self.t + self.b) / 2,
+                      self.label, INK_2, escape(ylabel)))
         return out
 
 
@@ -295,6 +298,119 @@ def tenant_figure(first, repeat):
     return frame(title, subtitle, caption, body), {'outcomes': outcomes}
 
 
+# ---------------------------------------------------------------- slide variants
+#
+# For a slide the title, takeaway and caveats live on the slide itself, so these
+# drop the embedded title and caption and use a compact canvas with large type:
+# placed 6.2 in wide, 18 px renders at about 11 pt.
+
+SW, SH = 720, 380
+
+
+def slide_frame(alt, body):
+    return ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" '
+            'font-family="%s" role="img" aria-label="%s"><rect width="100%%" height="100%%" fill="%s"/>'
+            '%s</svg>\n' % (SW, SH, SW, SH, FONT, escape(alt, {'"': '&quot;'}), SURFACE, ''.join(body)))
+
+
+def swatch(x, y, label, color, dash=None, under=None, size=18):
+    out = []
+    if under:
+        out.append('<line x1="%d" x2="%d" y1="%d" y2="%d" stroke="%s" stroke-width="3"/>'
+                   % (x, x + 26, y, y, under))
+    out.append('<line x1="%d" x2="%d" y1="%d" y2="%d" stroke="%s" stroke-width="3"%s/>'
+               % (x, x + 26, y, y, color, ' stroke-dasharray="%s"' % dash if dash else ''))
+    out.append(text(x + 34, y + 6, label, size, INK))
+    return out
+
+
+def slide_tenant(first, repeat):
+    outcomes = tenant_outcomes(first, repeat)
+    left, right = 250, 520
+    unit = (right - left) / 16.0
+    body = []
+    for x, label, color in [(left, 'Retrieved from CPU cache', BLUE), (left + 285, 'Missed', ORANGE)]:
+        body.append('<rect x="%d" y="14" width="18" height="18" rx="3" fill="%s"/>' % (x, color))
+        body.append(text(x + 26, 30, label, 18, INK))
+    names = {'cache_salt': 'cache_salt only', 'lmcache_tag': 'LMCache tenant tag'}
+    rows = {0: 'First request', 1: 'Repeat request'}
+    y = 64
+    for o in outcomes:
+        if o['repetition'] == 0:
+            body.append(text(0, y + 22, names[o['mode']], 19, INK, weight='bold'))
+            y += 34
+        body.append(text(left - 12, y + 22, rows[o['repetition']], 18, anchor='end'))
+        clip = 'sbar%s%d' % (o['mode'], o['repetition'])
+        body.append('<clipPath id="%s"><rect x="%.1f" y="%d" width="%.1f" height="30" rx="4"/></clipPath>'
+                    % (clip, left, y, unit * o['requests']))
+        x = left
+        for count, color in [(o['retrieved_768'], BLUE), (o['misses'], ORANGE)]:
+            if not count:
+                continue
+            w = unit * count
+            gap = 2 if x + w < left + unit * o['requests'] - 0.5 else 0
+            body.append('<rect x="%.1f" y="%d" width="%.1f" height="30" fill="%s" clip-path="url(#%s)"/>'
+                        % (x, y, w - gap, color, clip))
+            body.append(text(x + (w - gap) / 2, y + 22, str(count), 18, '#ffffff', 'middle', 'bold'))
+            x += w
+        if o['mode'] == 'cache_salt' and o['repetition'] == 0 and o['retrieved_768']:
+            body.append(text(right + 12, y + 22, '%d cross-tenant hits' % o['retrieved_768'], 18, INK))
+        y += 44
+        if o['mode'] == 'cache_salt' and o['repetition'] == 1:
+            y += 14
+    body.append(text(left, y + 20, 'Requests out of 16 tenants, identical 906-token prompt', 16))
+    alt = 'Tenant isolation: cache_salt alone versus LMCache tenant tags, first and repeat requests'
+    return slide_frame(alt, body)
+
+
+def slide_quota(timeline):
+    rows, events = quota_series(timeline)
+    ax = Axes(78, 88, 560, 300, 14, 140, tick=18, label=18)
+    body = ax.draw(range(0, 15, 2), [0, 42, 84, 126], 'Seconds since quota enforcer started',
+                   'Retained KV (MiB)')
+    for event, label in zip(events, ['A quota → 0', 'A quota → 126 MiB']):
+        ex = ax.x(event['seconds'])
+        body.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s" stroke-dasharray="2 3"/>'
+                    % (ex, ex, ax.t - 18, ax.b, INK_2))
+        body.append(text(ex + 6, ax.t - 6, label, 16))
+    xs = [ax.x(r['seconds']) for r in rows]
+    body += polyline(steps(xs, [ax.y(r['a_limit_MiB']) for r in rows]), INK_2, width=3, dash='7 5')
+    body += polyline(steps(xs, [ax.y(r['a_MiB']) for r in rows]), BLUE, width=3)
+    body += polyline(steps(xs, [ax.y(r['peer_each_MiB']) for r in rows]), ORANGE, width=3)
+    for x0, x1, value in overlap_spans(rows):
+        body.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s" stroke-width="3" '
+                    'stroke-dasharray="6 6"/>' % (ax.x(x0), ax.x(x1), ax.y(value), ax.y(value), BLUE))
+    end = rows[-1]
+    body.append(text(ax.r + 10, ax.y(end['a_MiB']) + 6, 'A', 18, INK, weight='bold'))
+    body.append(text(ax.r + 10, ax.y(end['peer_each_MiB']) + 6, 'B, C, D', 18, INK, weight='bold'))
+    body += swatch(0, 22, 'A retained', BLUE)
+    body += swatch(150, 22, 'B, C, D (each)', ORANGE)
+    body += swatch(345, 22, 'A quota', INK_2, dash='7 5')
+    body += swatch(490, 22, 'A = B, C, D', BLUE, dash='6 6', under=ORANGE)
+    alt = "Per-tenant retained KV over time while tenant A's quota is lowered to zero and raised"
+    return slide_frame(alt, body)
+
+
+def slide_scale(occupancy):
+    pts = scale_points(occupancy)
+    ax = Axes(86, 24, 560, 296, 600, 140, tick=18, label=18)
+    body = ax.draw(range(0, 601, 100), [0, 32, 64, 96, 128], 'Unique 4,096-token prompts completed',
+                   'Retained KV (GiB)')
+    cap = occupancy['completed']['cache_capacity_GiB']
+    body.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s" stroke-dasharray="7 5"/>'
+                % (ax.l, ax.r, ax.y(cap), ax.y(cap), INK_2))
+    body.append(text(ax.l + 8, ax.y(cap) - 10, '%d GiB configured capacity' % cap, 16))
+    body += polyline([(ax.x(n), ax.y(g)) for n, g in pts], BLUE, width=3)
+    for n, g in pts:
+        body.append('<circle cx="%.1f" cy="%.1f" r="5" fill="%s" stroke="%s" stroke-width="2"/>'
+                    % (ax.x(n), ax.y(g), BLUE, SURFACE))
+    n, g = pts[-1]
+    body.append(text(ax.x(n) + 12, ax.y(g) + 6, '%.3f GiB' % g, 18, INK, weight='bold'))
+    body.append(text(ax.x(n) + 12, ax.y(g) + 28, '{:,} chunks'.format(occupancy['occupancy'][-1]['chunks']), 16))
+    alt = 'Retained KV in the CPU tier after every 100 prompts, up to the 128 GiB configured capacity'
+    return slide_frame(alt, body)
+
+
 # ---------------------------------------------------------------- main
 
 def main():
@@ -325,8 +441,16 @@ def main():
     for name, (svg, values) in figures.items():
         (args.out_dir / name).write_text(svg, encoding='utf-8')
         data[name] = values
+    slides = {
+        'slide-tenant-isolation.svg': slide_tenant(load('gpu-tenants-first-summary.json'),
+                                                   load('gpu-tenants-repeat-summary.json')),
+        'slide-quota-timeline.svg': slide_quota(load('gpu-primary-quota-timeline.json')),
+        'slide-scale-retained.svg': slide_scale(load('gpu-scale-occupancy.json')),
+    }
+    for name, svg in slides.items():
+        (args.out_dir / name).write_text(svg, encoding='utf-8')
     (args.out_dir / 'figure-data.json').write_text(json.dumps(data, indent=2))
-    print('\n'.join(str(args.out_dir / n) for n in list(figures) + ['figure-data.json']))
+    print('\n'.join(str(args.out_dir / n) for n in list(figures) + list(slides) + ['figure-data.json']))
 
 
 if __name__ == '__main__':
