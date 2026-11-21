@@ -1,6 +1,6 @@
 # Three-person collaboration plan
 
-Team: Pradeep, Akshit and Jauwaad. Ownership below is **proposed work streams, not assignments already agreed or work already completed**. Choose one owner for each stream in the first team meeting, and record who implemented/reviewed each contribution.
+Team: Pradeep, Akshith Reddy Ganta and Jauwaad. Ownership below is **proposed work streams, not assignments already agreed or work already completed**. Choose one owner for each stream in the first team meeting, and record who implemented/reviewed each contribution.
 
 ## Suggested division
 
