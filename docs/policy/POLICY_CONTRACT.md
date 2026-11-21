@@ -1,6 +1,6 @@
 # CPU retained-KV allocation policy — candidate v1
 
-Owner: Akshit
+Owner: Akshith Reddy Ganta
 Reviewer: Jauwaad
 Status: Proposed specification; implementation and live integration pending.
 
