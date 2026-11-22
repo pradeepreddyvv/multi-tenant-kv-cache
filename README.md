@@ -8,7 +8,9 @@ A basic research prototype for **GPU inference with CPU-RAM KV caching** using Q
 | `quota` | Change one of four tenants' retained bytes during inference using a bounded custom L1 hook | 2 GiB |
 | `scale` | Populate 600 unique 4K prefixes and inspect retained KV plus oldest/newest retrieval | 128 GiB |
 
-**Status:** the original diagnostics passed on ASU Sol. This repository cleans their launch paths, pins the model revision and organizes outputs. The cleaned launcher has not received a fresh GPU run. This is not an adaptive allocation controller, an HTTP serving benchmark, or a combined 128 GiB / 16-tenant / live-quota implementation.
+**Live integration extension:** See [tenant scaling](docs/evaluation/TENANT_SCALING.md) for the streaming runner, soft-quota adapter, and configurable 4/8/16-tenant experiments. The original diagnostics and limitations below describe the historical component baseline. New 8/16-tenant GPU comparisons remain pending.
+
+**Historical diagnostic status:** the original diagnostics passed on ASU Sol. This repository cleans their launch paths, pins the model revision and organizes outputs. The cleaned launcher has not received a fresh GPU run. This is not an adaptive allocation controller, an HTTP serving benchmark, or a combined 128 GiB / 16-tenant / live-quota implementation.
 
 ## Architecture
 
