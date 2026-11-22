@@ -1,6 +1,6 @@
 # Team handoff: start here
 
-Prepared November 13, 2026 for Pradeep, Akshit and Jauwaad. Measurements are from November 10; this documentation branch did not run new experiments.
+Prepared November 13, 2026 for Pradeep, Akshith Reddy Ganta and Jauwaad. Measurements are from November 10; this documentation branch did not run new experiments.
 
 ## The question in one sentence
 
