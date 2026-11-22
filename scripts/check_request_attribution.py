@@ -48,7 +48,7 @@ def parse_log(raw):
     return lookups, retrieves
 
 
-def classify(record, lookups, retrieves):
+def classify(record, lookups, retrieves, kv_bytes_per_token=KV_BYTES_PER_TOKEN):
     """Return (outcome, problems) for one request record."""
     rid = record['request_id']
     found, got = lookups.get(rid, []), retrieves.get(rid, [])
@@ -68,8 +68,8 @@ def classify(record, lookups, retrieves):
     for r in got:
         if r['retrieved'] > limit:
             problems.append('retrieved %d > eligible %d' % (r['retrieved'], limit))
-        if r['size_gb'] is not None and abs(r['retrieved'] * KV_BYTES_PER_TOKEN / 2 ** 30 - r['size_gb']) > 5e-5:
-            problems.append('size %.4f gb != %d tokens x 56 KiB' % (r['size_gb'], r['retrieved']))
+        if r['size_gb'] is not None and abs(r['retrieved'] * kv_bytes_per_token / 2 ** 30 - r['size_gb']) > 5e-5:
+            problems.append('size %.4f gb != %d tokens x %d bytes' % (r['size_gb'], r['retrieved'], kv_bytes_per_token))
     if got and got[0]['retrieved'] > 0:
         if look['hit_tokens'] != got[0]['retrieved']:
             problems.append('lookup %d != retrieved %d' % (look['hit_tokens'], got[0]['retrieved']))
