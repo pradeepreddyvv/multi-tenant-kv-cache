@@ -1,6 +1,7 @@
 """Summarize saved live pilot records; missing evidence fails validity."""
 import argparse
 import json
+import hashlib
 from pathlib import Path
 import statistics
 
@@ -17,7 +18,21 @@ def summarize(run):
     lookups,retrieves=parse_log((run/'run.log').read_text(errors='replace'))
     problems=[]
     if manifest['status']!='completed': problems.append('run did not complete')
-    if len(rows)!=len(json.loads((run/'trace.json').read_text())): problems.append('trace not fully dispatched/completed')
+    trace=json.loads((run/'trace.json').read_text())
+    if len(rows)!=len(trace): problems.append('trace not fully dispatched/completed')
+    digest=hashlib.sha256(json.dumps(trace,separators=(',', ':')).encode()).hexdigest()
+    if digest!=manifest['trace_sha256']: problems.append('trace hash does not match manifest')
+    planned={r['request_id']:r for r in trace}
+    if len(planned)!=len(trace): problems.append('duplicate trace request ID')
+    if {r['request_id'] for r in rows}!=set(planned): problems.append('request IDs do not match trace')
+    for row in rows:
+        expected=planned.get(row['request_id'])
+        if row['tenant'] not in manifest['tenants']: problems.append('unknown request tenant')
+        if expected is not None:
+            if any(row.get(k)!=expected.get(k) for k in ('tenant','scheduled_at_s','variant')):
+                problems.append(row['request_id']+': request metadata does not match trace')
+            if 'prompt' in expected and row['prompt_tokens']!=len(expected['prompt']):
+                problems.append(row['request_id']+': prompt length does not match trace')
     ids=[r['request_id'] for r in rows]
     if len(ids)!=len(set(ids)): problems.append('duplicate request ID')
     for row in rows:
@@ -49,7 +64,12 @@ def summarize(run):
                 mean_completion_latency_s=statistics.mean(r['finished_at_s']-r['submitted_at_s'] for r in valid) if valid else None,
                 max_dispatch_lag_s=max((r['submitted_at_s']-r['scheduled_at_s'] for r in subset),default=None))
     updates=read_rows(run/'quota_updates.jsonl')
+    if not updates: problems.append('no quota initialization evidence')
+    elif updates[0]['status']!='initialized': problems.append('missing initial quota record')
     for update in updates:
+        quotas=update['quotas']
+        if set(quotas)!=set(manifest['tenants']): problems.append('quota membership mismatch')
+        if any(type(v) is not int or v<0 for v in quotas.values()): problems.append('invalid quota values')
         if sum(update['quotas'].values())!=manifest['budget_bytes']: problems.append('quota budget not preserved')
         if update['status'] not in ('initialized','accepted'):problems.append('quota update not accepted')
     snapshots=read_rows(run/'occupancy.jsonl')
