@@ -85,3 +85,7 @@ No command above starts a model except the explicit Slurm/run commands. [Histori
 ## Scope for the next version
 
 Integrate the independent mechanisms; instrument GPU streaming latency; implement a simple adaptive policy; compare fixed/manual/adaptive quotas under equal budgets and changing demand. Keep all results, model caches, credentials and local configuration out of Git. The original private research archive, chats and instructor correspondence are not part of this repository.
+
+## Team handoff and Phase 3 plan
+
+See the [November 23 team handoff](docs/handoff-2026-11-23/README.md) for the latest evidence summary, dataset and metrics, research questions, ownership and planned FairCache reproduction. Historical component limitations elsewhere in this README remain scoped to those earlier runs.
